@@ -1,47 +1,43 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+//SPDX-License-Identifier: MIT
+pragma solidity >=0.7.0;
 
-contract SimpleBank {
-
-    mapping(address => uint) private balances;
-    address public owner;
-    event LogDepositMade(address indexed accountAddress, uint amount);
-
-    constructor() {
-        owner = msg.sender;
+contract Student_management
+{
+    struct Student
+    {
+        int stud_id;
+        string Name;
+        string Department;
     }
 
-    function enroll() public returns (uint) {
-        address user = msg.sender;
-        balances[user] = 1000;
-        return balances[user];
+    Student[] Students;
+
+    function add_student( int stud_id, string memory Name, string memory Department) public 
+    {
+        Student  memory stud = Student(stud_id, Name, Department);
+        Students.push(stud);
     }
 
-    function deposit() public payable returns (uint) {
-        address user = msg.sender;
-        balances[user] += msg.value;
-        emit LogDepositMade(user, msg.value);
-        return balances[user];
+    function get_student(int stud_id) public view returns(string memory, string memory)
+    {
+        for (uint i = 0; i < Students.length ; i++)
+        {
+            Student memory stud = Students[i];
+            if (stud.stud_id == stud_id)
+            {
+                return (stud.Name, stud.Department);
+            }
+        }
+        return ("Name Not Found", "Department Not Found"); 
+    } 
+
+    function get_student_count() public view returns(uint256)
+    {
+        return Students.length;
     }
 
-    function withdraw(uint withdrawAmount) public returns (uint remainingBal) {
-        address payable user = payable(msg.sender);
-
-        require(balances[user] >= withdrawAmount, "Insufficient balance");
-        
-        balances[user] -= withdrawAmount;
-        (bool success, ) = user.call{value: withdrawAmount}("");
-        require(success, "Transfer failed");
-        return balances[user];
-    }
-
-
-    function balance() public view returns (uint) {
-        address user = msg.sender;
-        return balances[user];
-    }
-
-    receive() external payable {
-        revert("Invalid transaction");
+    fallback() external 
+    {
+        add_student(2,"Unknown","CSE");
     }
 }
