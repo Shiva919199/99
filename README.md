@@ -8,3 +8,4 @@ p == https://github.com/Sc019/98
 r=
 
 https://github.com/RohitBhandare/machine-learning-practicals
+drive  https://shorturl.at/kwIZ4  ads     https://drive.google.com/drive/u/3/folders/1pCFUBlk2b0iosLJ4Y5BO6UhCRV_N9xqW
